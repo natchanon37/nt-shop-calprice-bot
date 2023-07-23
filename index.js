@@ -20,7 +20,6 @@ const client = new line.Client(lineConfig);
 app.post('/webhook', line.middleware(lineConfig), async (req, res) => {
   try {
     const events = req.body.events;
-    console.log('this is event---->', events);
     return events.length > 0 ? await events.map(it => handleEvent(it)) : res.status(200).send('OK');
 
   } catch (error) {
@@ -33,7 +32,7 @@ const handleEvent = async (event) => {
   let txt = event.message.text;
   let replyToken = event.replyToken;
   const example = 'ตัวอย่างการใช้งาน \nราคา(¥) Type Rate Size \n51981 400 0.25 100'
-  const wrongInput = 'รูปแบบข้อมูลไม่ถูกต้อง กรุณากรอกข้อมูลใหม่อีกครั้งนะจ๊ะ'
+  const wrongInput = 'รูปแบบข้อมูลไม่ถูกต้อง กรุณากรอกข้อมูลใหม่อีกครั้งนะจ๊ะ!!!!!!!!!'
 
   let isValidate = isTextValidate(txt);
   if (!isValidate) return client.replyMessage(replyToken, { type: 'text', text: example })
@@ -55,7 +54,6 @@ const handleEvent = async (event) => {
     }
 
     let result = calPrice(lineObj.price, lineObj.type, lineObj.rate, lineObj.size);
-    console.log('this is reesult ---->', result);
     return client.replyMessage(replyToken, { type: 'text', text: `cost is : ${result.toString()}฿` })
   }
 }
