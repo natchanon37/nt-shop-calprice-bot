@@ -32,16 +32,21 @@ const handleEvent = async (event) => {
   if (event.type !== 'message' || event.message.type !== 'text') return Promise.resolve(null)
   let txt = event.message.text;
   let replyToken = event.replyToken;
-  const exampl = 'ตัวอย่างการใช้งาน \nราคา(¥) Type Rate Size \n51981 400 0.25 100'
+  const example = 'ตัวอย่างการใช้งาน \nราคา(¥) Type Rate Size \n51981 400 0.25 100'
+  const wrongInput = 'รูปแบบข้อมูลไม่ถูกต้อง กรุณากรอกข้อมูลใหม่อีกครั้งนะจ๊ะ'
 
   let isValidate = isTextValidate(txt);
-
-  console.log('---valida----?', isValidate);
-
-  if (!isValidate) return client.replyMessage(replyToken, { type: 'text', text: exampl })
+  if (!isValidate) return client.replyMessage(replyToken, { type: 'text', text: example })
 
   if (isValidate) {
     const lineInput = txt.split(' ').map(Number)
+
+    for (let i = 0; i < lineInput.length; i++) {
+      if (isNaN(lineInput[i])) {
+        return client.replyMessage(replyToken, { type: 'text', text: wrongInput })
+      }
+
+    }
     const lineObj = {
       price: lineInput[0],
       type: lineInput[1].toString(),
@@ -53,8 +58,6 @@ const handleEvent = async (event) => {
     console.log('this is reesult ---->', result);
     return client.replyMessage(replyToken, { type: 'text', text: `cost is : ${result.toString()}฿` })
   }
-
-
 }
 
 app.listen(PORT, () => {
