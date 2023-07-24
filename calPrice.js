@@ -14,26 +14,24 @@ const priceBySize = (size) => {
 
 const smallSize = {
   jpToThaiFee: 150,
-  thaiFee: 100,
 }
 
 const mediumSize = {
   jpToThaiFee: 1200,
-  thaiFee: 500,
 }
 
-const calPrice = (price, type, rate, size) => {
+const calPrice = (price, type, rate, size, thaiShippingFee) => {
   let priceInFloat = parseFloat(price)
   let cost = 0;
   let jpFee = 0;
   switch (type) {
     case '400':
       jpFee = (priceInFloat + priceBySize(size)) * rate
-      cost = jpFee + smallSize.jpToThaiFee + smallSize.thaiFee;
+      cost = jpFee + smallSize.jpToThaiFee + thaiShippingFee;
       return cost;
     case '1000':
       jpFee = (priceInFloat + priceBySize(size)) * rate;
-      cost = jpFee + mediumSize.jpToThaiFee + mediumSize.thaiFee;
+      cost = jpFee + mediumSize.jpToThaiFee + thaiShippingFee;
       return cost;
   }
 }

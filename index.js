@@ -31,7 +31,7 @@ const handleEvent = async (event) => {
   if (event.type !== 'message' || event.message.type !== 'text') return Promise.resolve(null)
   let txt = event.message.text;
   let replyToken = event.replyToken;
-  const example = 'ตัวอย่างการใช้งาน \nราคา(¥) Type Rate Size \n51981 400 0.25 100'
+  const example = 'ตัวอย่างการใช้งาน \nราคา(¥): 64640 \nType: 400 or 1000 \nRate:0.25 \nSizeJp(cm):(0-200) \nthaiShipping-Fee(฿):(100-500) \n\n64640 1000 0.25 180 500'
   const wrongInput = 'รูปแบบข้อมูลไม่ถูกต้อง กรุณากรอกข้อมูลใหม่อีกครั้งนะจ๊ะ!!!!!!!!!'
 
   let isValidate = isTextValidate(txt);
@@ -50,10 +50,11 @@ const handleEvent = async (event) => {
       price: lineInput[0],
       type: lineInput[1].toString(),
       rate: lineInput[2],
-      size: lineInput[3].toString()
+      size: lineInput[3].toString(),
+      thaiShippingFee: lineInput[4]
     }
 
-    let result = calPrice(lineObj.price, lineObj.type, lineObj.rate, lineObj.size);
+    let result = calPrice(lineObj.price, lineObj.type, lineObj.rate, lineObj.size, lineObj.thaiShippingFee);
     return client.replyMessage(replyToken, { type: 'text', text: `cost is : ${result.toString()}฿` })
   }
 }
